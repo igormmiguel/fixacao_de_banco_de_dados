@@ -224,3 +224,17 @@ BEGIN
   END LOOP;
   CLOSE book_cursor;
 END;
+
+-- 3
+
+CREATE OR REPLACE FUNCTION atualizar_resumos() RETURNS void AS $$
+DECLARE
+    livro_record Livro%ROWTYPE;
+BEGIN
+    FOR livro_record IN SELECT * FROM Livro LOOP
+        UPDATE Livro 
+        SET resumo = CONCAT(resumo, 'Este é um excelente livro!') 
+        WHERE id = livro_record.id;
+    END LOOP;
+END;
+
