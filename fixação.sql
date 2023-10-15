@@ -259,3 +259,21 @@ BEGIN
         RETURN NEXT;
     END LOOP;
 END;
+
+
+-- 5
+
+CREATE OR REPLACE FUNCTION autores_sem_livros() RETURNS SETOF text AS $$
+DECLARE
+    author_name text;
+BEGIN
+    FOR author_name IN
+        SELECT a.first_name || ' ' || a.last_name
+        FROM Autor a
+        LEFT JOIN Livro_Autor la ON a.id = la.autor_id
+        WHERE la.autor_id IS NULL
+    LOOP
+        RETURN NEXT author_name;
+    END LOOP;
+END;
+
