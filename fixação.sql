@@ -238,3 +238,24 @@ BEGIN
     END LOOP;
 END;
 
+-- 4
+
+CREATE OR REPLACE FUNCTION media_livros_por_editora() RETURNS TABLE(
+    editora_nome text,
+    media_livros numeric
+) AS $$
+DECLARE
+    total_livros_per_editora INTEGER;
+    total_editoras INTEGER;
+BEGIN
+    CREATE TEMP TABLE temp_table AS
+    SELECT editora, COUNT(*) AS total_livros
+    FROM Livro
+    GROUP BY editora;
+
+    total_editoras := (SELECT COUNT(*) FROM temp_table);
+    FOR editora_nome, total_livros IN SELECT editora, total_livros FROM temp_table LOOP
+        media_livros := total_livros / total_editoras;
+        RETURN NEXT;
+    END LOOP;
+END;
