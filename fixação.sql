@@ -130,3 +130,56 @@ SELECT MIN(preco) FROM produtos;
 --D
 SELECT SUM(IF(quantidade > 0, preco * quantidade, 0)) AS estoque_total
 FROM produtos;
+
+--7
+--A
+DELIMITER //
+CREATE FUNCTION Fatorial(numero INT)
+RETURNS INT
+BEGIN
+  DECLARE resultado INT;
+  DECLARE contador INT;
+  SET resultado = 1;
+  SET contador = 1;
+  WHILE contador <= numero DO
+    SET resultado = resultado * contador;
+    SET contador = contador + 1;
+  END WHILE;
+  RETURN resultado;
+END;
+//
+DELIMITER;
+
+SELECT Fatorial(5); 
+
+--B
+DELIMITER //
+CREATE FUNCTION Exponencial(base DECIMAL, expoente DECIMAL)
+RETURNS DECIMAL
+BEGIN
+  DECLARE resultado DECIMAL;
+  SET resultado = POW(base, expoente);
+  RETURN resultado;
+END;
+//
+DELIMITER ;
+
+SELECT Exponencial(2.0, 3.0);
+
+--C
+DELIMITER //
+CREATE FUNCTION Palindromo(palavra VARCHAR(255))
+RETURNS INT
+BEGIN
+  DECLARE palavraInvertida VARCHAR(255);
+  SET palavraInvertida = REVERSE(palavra);
+  IF palavra = palavraInvertida THEN
+    RETURN 1;
+  ELSE
+    RETURN 0;
+  END IF;
+END;
+//
+DELIMITER ;
+SELECT verificarPalindromo('Onix');
+SELECT verificarPalindromo('Spacefox'); 
